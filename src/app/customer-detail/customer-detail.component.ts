@@ -1,5 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Customer } from '../customers/customer';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+import { CustomerService } from '../customers/customer.service';
 
 @Component({
   selector: 'app-customer-detail',
@@ -9,9 +12,26 @@ import { Customer } from '../customers/customer';
 export class CustomerDetailComponent implements OnInit {
   @Input() customer: Customer;
 
-  constructor() { }
+  constructor(private route: ActivatedRoute,
+              private customerService: CustomerService,
+              private location: Location) { }
 
   ngOnInit() {
+    this.getHero();
   }
 
+  getHero(): void {
+    const id = +this.route.snapshot.paramMap.get('id');
+    this.customerService.getCustomer(id)
+      .subscribe(customer => this.customer = customer);
+  }
+
+  goBack(): void {
+    this.location.back();
+  }
+
+  save(): void {
+    this.customerService.updateCustomer(this.customer)
+      .subscribe(() => this.goBack());
+  }
 }
