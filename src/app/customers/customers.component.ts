@@ -10,7 +10,6 @@ import { CustomerService } from './customer.service';
 export class CustomersComponent implements OnInit {
 
   customers: Customer[];
-  selectedCustomer: Customer;
 
   constructor(private customerService: CustomerService) { }
 
@@ -19,11 +18,22 @@ export class CustomersComponent implements OnInit {
     this.getCustomers();
   }
 
-  onSelect(customer: Customer): void {
-    this.selectedCustomer = customer;
+  getCustomers(): void {
+    this.customerService.getCustomers()
+      .subscribe(customers => this.customers = customers);
   }
 
-  getCustomers(): void {
-    this.customers = this.customerService.getCustomers();
+  add(name: string): void {
+    name = name.trim();
+    if (!name) { return; }
+    this.customerService.addCustomer({ name } as Customer)
+      .subscribe(customer => {
+        this.customers.push(customer);
+      });
+  }
+
+  delete(customer: Customer): void {
+    this.customers = this.customers.filter(c => c !== customer);
+    this.customerService.deleteCustomer(customer).subscribe();
   }
 }

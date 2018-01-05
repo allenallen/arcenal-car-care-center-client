@@ -1,7 +1,12 @@
   <h1>
-    Welcome to {{ title }}!
+    <img width="70" alt="Angular Logo" src="assets/logo.jpg"> Welcome to {{ title }}!
   </h1>
-  <img width="300" alt="Angular Logo" src="assets/logo.jpg">
-  <app-customers></app-customers>
+  
+  <nav>
+  	<a routerLink="/customers">Customers</a>
+  	<a routerLink="/dashboard">Dashboard</a>
+  </nav>
+  <router-outlet></router-outlet>
+  <app-messages></app-messages>
   
 
